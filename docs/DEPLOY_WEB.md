@@ -144,9 +144,9 @@ Current deployment: `https://ecomove-ai.ecomove-ai.workers.dev` (Supabase projec
 
 ### Option C — GitHub Pages (current live deployment)
 
-The site is served from the repository `ecomove`, i.e. under a sub-path: `https://<github-user>.github.io/ecomove/`. On GitHub Pages the account name is always part of the address unless you add a custom domain.
+**Current deployment:** repository `EcoMoveAI/ecomoveai.github.io`, owned by the free GitHub organization **EcoMoveAI**, served at **https://ecomoveai.github.io/**. A repository named `<owner>.github.io` is served from the domain root; any other repository name is served under `/<repo-name>/`. The owner's name is always part of a GitHub Pages address, which is why an organization is used instead of a personal account.
 
-The workflow sets `EXPO_PUBLIC_BASE_URL=/ecomove` (the repository name). `app.config.js` passes it to Expo Router as `experiments.baseUrl`; the app uses `BASE_PATH` (`src/config.ts`) for the service worker, sql.js, icons and the auth redirect; and `build-web.mjs` rewrites the links in `index.html` and the manifest's `id`/`start_url`/`scope`/icons. Cloudflare and local builds leave the variable unset and serve from the domain root.
+For a sub-path repository, the workflow sets `EXPO_PUBLIC_BASE_URL=/<repo-name>`; for `*.github.io` repositories it leaves the variable empty. `app.config.js` passes it to Expo Router as `experiments.baseUrl`; the app uses `BASE_PATH` (`src/config.ts`) for the service worker, sql.js, icons and the auth redirect; and `build-web.mjs` rewrites the links in `index.html` and the manifest's `id`/`start_url`/`scope`/icons. Cloudflare and local builds leave the variable unset and serve from the domain root.
 
 To test locally under the sub-path, set `EXPO_PUBLIC_BASE_URL=/ecomove` in the terminal, then run `node scripts/build-web.mjs --target=github-pages`, `npm run preview:web` (served at `http://localhost:4173/ecomove/`) and `npm run test:pwa`.
 

@@ -31,12 +31,19 @@ jobs:
       - run: npm run typecheck
       - run: npm run lint
       - run: npx jest --ci
+      # A repository named "<owner>.github.io" is served at the domain root (https://ecomoveai.github.io/);
+      # any other repository is served under /<repo-name>/.
+      - name: Base path
+        run: |
+          if [[ "${{ github.event.repository.name }}" == *.github.io ]]; then
+            echo "EXPO_PUBLIC_BASE_URL=" >> "$GITHUB_ENV"
+          else
+            echo "EXPO_PUBLIC_BASE_URL=/${{ github.event.repository.name }}" >> "$GITHUB_ENV"
+          fi
       - name: Build PWA
         run: npm run build:web -- --target=github-pages
         env:
           CI: '1'
-          # The repository is "ecomove", so the site lives at https://<user>.github.io/ecomove/
-          EXPO_PUBLIC_BASE_URL: /${{ github.event.repository.name }}
           EXPO_PUBLIC_SUPABASE_URL: ${{ vars.EXPO_PUBLIC_SUPABASE_URL }}
           EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ vars.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
       - uses: actions/upload-pages-artifact@v3

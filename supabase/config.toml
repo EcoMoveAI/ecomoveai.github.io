@@ -1,0 +1,39 @@
+# Minimal Supabase CLI configuration for EcoMove AI.
+# Run `npx supabase init` only if this file is missing; otherwise link with `npx supabase link --project-ref <ref>`.
+# Auth URL settings below apply to the local stack; for the hosted project set them in the dashboard
+# (Authentication → URL Configuration), see docs/DEPLOY_WEB.md.
+project_id = "ecomove-ai"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public"]
+max_rows = 1000
+
+[db]
+port = 54322
+major_version = 17
+
+[auth]
+enabled = true
+# Web (PWA) is the primary client; the native app's deep links stay allowed.
+site_url = "http://localhost:8081"
+additional_redirect_urls = ["http://localhost:8081/**", "http://localhost:4173/**", "https://*.pages.dev/**", "ecomoveai://**", "exp://**"]
+jwt_expiry = 3600
+enable_refresh_token_rotation = true
+
+[auth.email]
+enable_signup = true
+enable_confirmations = true
+
+[functions.mobility-assistant]
+verify_jwt = true
+import_map = "./functions/deno.json"
+
+[functions.routes]
+verify_jwt = true
+import_map = "./functions/deno.json"
+
+[functions.delete-account]
+verify_jwt = true
+import_map = "./functions/deno.json"
